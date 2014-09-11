@@ -1,0 +1,109 @@
+---
+vagrantfile-local:
+    app:
+        box: 'centos6'
+        box_url: 'https://box_url'
+        hostname: 'app'
+        memory: '512'
+        cpus: '1'
+        chosen_provider: virtualbox
+        vagrant: true
+        impact_level: '2'
+        node_role: 'application'
+        configuration_group: 'undef'
+        environment: 'undef'
+        network:
+            private_network: 192.168.0.7
+            forwarded_port:
+                ssh_forward:
+                    host: '6059'
+                    guest: '22'
+        post_up_message: 'Hello There!'
+        provider:
+            virtualbox:
+                modifyvm:
+                    natdnshostresolver1: on
+            vmware:
+                numvcpus: 1
+            parallels:
+                cpus: 1
+        provision:
+            puppet:
+                manifests_path: manifests/
+                manifest_file: site.pp
+                module_path: modules
+                options:
+                    - '--verbose'
+                    - '--hiera_config hiera.yaml'
+                    - '--parser future'
+        synced_folder:
+            hiera:
+                source: hiera
+                target: /var/lib/hiera
+                sync_type: default
+                rsync:
+                    args:
+                        - '--verbose'
+                        - '--archive'
+                        - '-z'
+                    exclude:
+                        - .vagrant/
+                    auto: 'false'
+        usable_port_range:
+            start: 10200
+            stop: 10500
+
+    db:
+        box: 'centos6'
+        box_url: 'https://box_url'
+        hostname: 'db'
+        memory: '512'
+        cpus: '1'
+        chosen_provider: virtualbox
+        vagrant: true
+        impact_level: '2'
+        node_role: 'application'
+        configuration_group: 'undef'
+        environment: 'undef'
+        network:
+            private_network: 192.168.0.2
+            forwarded_port:
+                ssh_forward:
+                    host: '6059'
+                    guest: '22'
+        post_up_message: 'Hello There!'
+        provider:
+            virtualbox:
+                modifyvm:
+                    natdnshostresolver1: on
+            vmware:
+                numvcpus: 1
+            parallels:
+                cpus: 1
+        provision:
+            puppet:
+                manifests_path: manifests/
+                manifest_file: site.pp
+                module_path: modules
+                options:
+                    - '--verbose'
+                    - '--hiera_config hiera.yaml'
+                    - '--parser future'
+        synced_folder:
+            hiera:
+                source: hiera
+                target: /var/lib/hiera
+                sync_type: default
+                rsync:
+                    args:
+                        - '--verbose'
+                        - '--archive'
+                        - '-z'
+                    exclude:
+                        - .vagrant/
+                    auto: 'false'
+        usable_port_range:
+            start: 10200
+            stop: 10500
+
+
